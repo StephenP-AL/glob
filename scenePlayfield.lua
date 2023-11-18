@@ -28,6 +28,10 @@ function scene:show( event )
    if ( phase == "will" ) then
       -- Called when the scene is still off screen (but is about to come on screen).
       
+      local pysics = require("physics")
+      physics.start()
+      physics.setGravity(0,1)
+
       --Field boundries
       local boundTop = display.newRect(0,0,display.contentWidth,0)
       boundTop.anchorX = 0; boundTop.anchorY = 0
@@ -41,6 +45,8 @@ function scene:show( event )
       pysics.addBody(boundBottom, 'static')
       pysics.addBody(boundLeft, 'static')
       pysics.addBody(boundRight, 'static')
+
+      
    
       -- Globule animation
       function squishX(obj)
@@ -50,7 +56,14 @@ function scene:show( event )
       function squishY(obj)
          transition.to(obj,{transition = easing.inOutSine, yScale = .9, xScale = 1.1, time = 3500, onComplete = squishX})
       end
-   
+
+      local glob = display.newCircle(4,4,30)
+      glob.x = 190
+      glob.y = 20
+      glob:setFillColor(.1,.2,.1)
+      glob:setStrokeColor(.9,.8,.9)
+      glob.strokeWidth = 2
+      physics.addBody(glob)
    
    elseif ( phase == "did" ) then
       -- Called when the scene is now on screen.
