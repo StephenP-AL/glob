@@ -30,7 +30,7 @@ function scene:show( event )
       
       local pysics = require("physics")
       physics.start()
-      physics.setGravity(0,1)
+      physics.setGravity(0,0)
 
       --Field boundries
       local boundTop = display.newRect(0,0,display.contentWidth,0)
@@ -63,7 +63,11 @@ function scene:show( event )
       glob:setFillColor(.1,.2,.1)
       glob:setStrokeColor(.9,.8,.9)
       glob.strokeWidth = 2
-      physics.addBody(glob)
+      physics.addBody(glob,'dynamic',{bounce=1,density=0})
+      squishX(glob)
+
+      glob.rotate = math.random() * math.pi
+      glob:applyForce(4,4)
    
    elseif ( phase == "did" ) then
       -- Called when the scene is now on screen.
