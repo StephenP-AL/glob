@@ -57,7 +57,33 @@ function scene:show( event )
          transition.to(obj,{transition = easing.inOutSine, yScale = .9, xScale = 1.1, time = 3500, onComplete = squishX})
       end
 
-      local glob = display.newCircle(4,4,30)
+      globules = {}
+
+      local function spawnGlobule(type,size,startX,startY,deltaX,deltaY,red,green,blue)
+	      local glob = display.newGroup()
+	      table.insert(globules,glob)
+	      local body = display.newCircle(4,4,size)
+	      glob:insert(body)
+	      physics.addBody(glob,'dynamic',{bounce=1,density=0})
+	      squishX(glob)
+	      glob.rotate = math.random() * math.pi
+	      glob:applyForce(deltaX,deltaY)
+	      glob.x = startX
+	      glob.y = startY
+	      body:setFillColor(red,green,blue)
+	      body:setStrokeColor(.9,.9,.9)
+	      body.strokeWidth = 2
+	      
+
+
+      end
+	
+      for i = 0, 4,1
+	do
+      		spawnGlobule(1,40,math.random() * display.contentWidth,math.random() * display.contentHeight,4,4,math.random(),math.random(),math.random())
+	end
+
+      local glob = display.newCircle(4,4,20)
       glob.x = 190
       glob.y = 20
       glob:setFillColor(.1,.2,.1)
