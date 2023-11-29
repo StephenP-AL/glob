@@ -31,6 +31,7 @@ function scene:show( event )
       local pysics = require("physics")
       physics.start()
       physics.setGravity(0,0)
+      forceCoef = 7
 
       --Field boundries
       local boundTop = display.newRect(0,0,display.contentWidth,0)
@@ -67,23 +68,56 @@ function scene:show( event )
 	      physics.addBody(glob,'dynamic',{bounce=1,density=0})
 	      squishX(glob)
 	      glob.rotate = math.random() * math.pi
-	      glob:applyForce(deltaX,deltaY)
+	      glob:applyForce(deltaX * forceCoef,deltaY * forceCoef)
 	      glob.x = startX
 	      glob.y = startY
 	      body:setFillColor(red,green,blue)
-	      body:setStrokeColor(.9,.9,.9)
+		--color
+		local cD = 0
+		local cE = 0
+		local cF = 0
+
+		if red > 0.4 and red < 0.6
+			then
+				cD = math.abs(0.5 - red)
+			else
+				cD = 1 - red
+			end
+		if green > 0.4 and green < 0.6
+			then
+				cE = math.abs(0.5 - green)
+			else
+				cE = 1 - green
+			end
+		if blue > 0.4 and blue < 0.6
+			then
+				cF = math.abs(0.5 - blue)
+			else
+				cF = 1 - blue
+		end
+
+
+	      body:setStrokeColor(cD,Ce,CF)
 	      body.strokeWidth = 2
 	      
 
 
       end
-	
-      for i = 0, 4,1
+
+	function update()
+		table.remove(globules,1)
+
+     		spawnGlobule(1,(0.5 + math.random()) * 40,math.random() * display.contentWidth,math.random() * display.contentHeight,4,4,math.random(),math.random(),math.random())
+	end
+	timer.performWithDelay(6000,update,0)
+
+
+      for i = 0, 1,1
 	do
-      		spawnGlobule(1,40,math.random() * display.contentWidth,math.random() * display.contentHeight,4,4,math.random(),math.random(),math.random())
+      		spawnGlobule(1,(0.5 + math.random()) * 40,math.random() * display.contentWidth,math.random() * display.contentHeight,4,4,math.random(),math.random(),math.random())
 	end
 
-      local glob = display.newCircle(4,4,20)
+--[[      local glob = display.newCircle(4,4,20)
       glob.x = 190
       glob.y = 20
       glob:setFillColor(.1,.2,.1)
@@ -93,7 +127,7 @@ function scene:show( event )
       squishX(glob)
 
       glob.rotate = math.random() * math.pi
-      glob:applyForce(4,4)
+      glob:applyForce(4,4)--]]
    
    elseif ( phase == "did" ) then
       -- Called when the scene is now on screen.
